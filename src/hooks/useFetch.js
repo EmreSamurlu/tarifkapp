@@ -3,13 +3,17 @@ import axios from 'axios';
 
 const useFetch = url => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
       const {data: respData} = await axios.get(url);
       setData(respData);
+      setLoading(false);
     } catch (err) {
-      console.log(err);
+      setError(err.message);
+      setLoading(false);
     }
   };
 
@@ -17,7 +21,7 @@ const useFetch = url => {
     fetchData();
   }, []);
 
-  return {data};
+  return {data, loading, error};
 };
 
 export default useFetch;
